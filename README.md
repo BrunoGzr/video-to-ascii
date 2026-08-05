@@ -1,4 +1,4 @@
-# Video to ASCII
+
 
 A Go tool that converts videos and photos into ASCII art — preview it live in your terminal or export it as an MP4/PNG file.
 
