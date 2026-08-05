@@ -3,8 +3,16 @@
 A Go tool that converts videos and photos into ASCII art — preview it live in your terminal or export it as an MP4/PNG file.
 
 <p align="center">
-  <!-- Replace this line with an actual screenshot or GIF when you have one -->
-  <em>Example output — coming soon (photo/video of the author's cat, converted to ASCII)</em>
+  <table>
+    <tr>
+      <td align="center"><b>Original</b></td>
+      <td align="center"><b>ASCII Output</b></td>
+    </tr>
+    <tr>
+      <td><img src="assets/original.gif" width="240"></td>
+      <td><img src="assets/ascii.gif" width="240"></td>
+    </tr>
+  </table>
 </p>
 
 ---
@@ -13,6 +21,8 @@ A Go tool that converts videos and photos into ASCII art — preview it live in 
 
 **Video to ASCII** takes any `.mp4` video or `.jpg`/`.png` photo and recreates it using ASCII characters. You can preview the result directly in the terminal or export it as a rendered MP4 (H.264) or PNG image. Output files are saved to your **Downloads** directory, named after the original file with an `_Ascii` suffix — e.g. `cat.mp4` → `cat_Ascii.mp4`.
 
+**NOTE** some videos will not look that great in ascii due to the colours / background, please test the options to see what pleases you more. 
+
 ### Pipeline
 
 ```
@@ -20,22 +30,22 @@ Input media (mp4/jpg/png)
        │
        ▼
 ┌──────────────┐
-│  ffmpeg-go    │  Extract frames at chosen resolution & FPS
+│  ffmpeg-go   │ ->  Extract frames at chosen resolution & FPS
 └──────┬───────┘
        │
        ▼
 ┌──────────────┐
-│  ansiart      │  Render each frame as ASCII with ANSI true color
+│  ansiart     │ ->  Render each frame as ASCII with ANSI true color
 └──────┬───────┘
        │
        ▼
 ┌──────────────┐
-│  fogleman/gg  │  Draw ASCII onto PNG canvas (with contrast boost)
+│  fogleman/gg │ -> Draw ASCII onto PNG canvas (with contrast boost)
 └──────┬───────┘
        │
        ▼
 ┌──────────────┐
-│  ffmpeg-go    │  Encode PNG frames back into MP4 (H.264 / yuv420p)
+│  ffmpeg-go   │ -> Encode PNG frames back into MP4 (H.264 / yuv420p)
 └──────────────┘
        │
        ▼
@@ -132,9 +142,9 @@ Main Menu
 | 1  - Select Media (Video/Photo)        |
 | 2  - Select Resolution                 |
 | 3  - Convert to ASCII                  |
-| 4  - Preview ASCII                      |
-| 5  - Export (MP4/PNG)                   |
-| 6  - Exit                               |
+| 4  - Preview ASCII                     |
+| 5  - Export (MP4/PNG)                  |
+| 6  - Exit                              |
 +----------------------------------------+
 
 > 
