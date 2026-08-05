@@ -1,0 +1,9 @@
+# Binaries
+*.exe
+*.exe~
+video-to-ascii
+
+# Outputs tests
+output_*.mp4
+output_*.png
+
