@@ -21,11 +21,13 @@ func extractFrames(fileDirectory string, resolution string, fps int) ([]image.Im
 
 	outPattern := filepath.Join(tempDir, "frame_%09d.jpg")
 
+	kwargs := ffmpeg.KwArgs{"r": fps}
+	if resolution != "" {
+		kwargs["vf"] = resolution
+	}
+
 	err = ffmpeg.Input(fileDirectory).
-		Output(outPattern, ffmpeg.KwArgs{
-			"vf": resolution,
-			"r":  fps,
-		}).Run()
+		Output(outPattern, kwargs).Run()
 	if err != nil {
 		return nil, fmt.Errorf("failed to extract frames with ffmpeg: %w", err)
 	}

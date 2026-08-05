@@ -8,14 +8,16 @@ import (
 
 
 type settings struct {
-	media      string
-	url        string
-	resolution string
-	fps        int
-	useColor   bool
-	bgColor    string
-	asciiCols  int
-	asciiRows  int
+	media       string
+	url         string
+	resolution  string
+	resLabel    string // display name for the current resolution
+	fps         int
+	useColor    bool
+	bgColor     string
+	asciiCols   int
+	asciiRows   int
+	nativeRes   bool // when true, grid is computed from the decoded frame's aspect ratio
 }
 
 
@@ -27,9 +29,9 @@ type resolutionPreset struct {
 }
 
 var resolutionPresets = []resolutionPreset{
-	{"720p  (High Quality)", "scale = 1280:720", 200, 100},
-	{"480p  (Balanced)", "scale = 854:480", 160, 80},
-	{"360p  (Faster Render)", "scale = 640:360", 120, 60},
+	{"720p  (High Quality)", "scale=1280:720", 200, 100},
+	{"480p  (Balanced)", "scale=854:480", 160, 80},
+	{"360p  (Faster Render)", "scale=640:360", 120, 60},
 }
 
 
@@ -71,8 +73,8 @@ func printStatus(s *settings, asciiFrames []string, asciiSingle string) {
 	if s.media != "" {
 		fmt.Printf("  Media: %s\n", s.media)
 	}
-	if s.resolution != "" {
-		fmt.Printf("  Resolution: %s\n", s.resolution)
+	if s.resLabel != "" {
+		fmt.Printf("  Resolution: %s\n", s.resLabel)
 	}
 	if s.fps > 0 {
 		fmt.Printf("  FPS: %d\n", s.fps)

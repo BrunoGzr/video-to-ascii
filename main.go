@@ -165,28 +165,41 @@ func handleSelectMedia(reader *bufio.Reader, s *settings) {
 
 func handleSelectResolution(reader *bufio.Reader, s *settings) {
 	fmt.Println("\n--- Select Resolution ---")
-	options := make([]string, len(resolutionPresets))
-	for i, p := range resolutionPresets {
-		options[i] = fmt.Sprintf("%d  - %s", i+1, p.label)
+	options := []string{
+		"1  - Native (match source file)",
+		"2  - 720p  (High Quality)",
+		"3  - 480p  (Balanced)",
+		"4  - 360p  (Faster Render)",
 	}
 	printMenu(options)
 
 	fmt.Print("> ")
 	choice, err := readInt(reader)
-	if err != nil || choice < 1 || choice > len(resolutionPresets) {
+	if err != nil || choice < 1 || choice > 4 {
 		fmt.Println("Invalid resolution!")
 		return
 	}
 
-	preset := resolutionPresets[choice-1]
-	s.resolution = preset.filter
-	s.asciiCols = preset.cols
-	s.asciiRows = preset.rows
-	fmt.Printf(">> Resolution set to: %s\n", s.resolution)
+	if choice == 1 {
+		// Native resolution: no ffmpeg scale filter, grid computed at runtime
+		s.resolution = ""
+		s.resLabel = "Native (auto-detected from source)"
+		s.asciiCols = 0
+		s.asciiRows = 0
+		s.nativeRes = true
+	} else {
+		preset := resolutionPresets[choice-2] // offset by 1 because option 1 is Native
+		s.resolution = preset.filter
+		s.resLabel = preset.label
+		s.asciiCols = preset.cols
+		s.asciiRows = preset.rows
+		s.nativeRes = false
+	}
+	fmt.Printf(">> Resolution set to: %s\n", s.resLabel)
 }
 
 func handleConvert(reader *bufio.Reader, s *settings, asciiFrames *[]string, asciiSingle *string) {
-	if s.resolution == "" || s.url == "" {
+	if s.url == "" || (!s.nativeRes && s.resolution == "") {
 		fmt.Println("!! Please select media and resolution first.")
 		return
 	}
@@ -201,7 +214,12 @@ func handleConvert(reader *bufio.Reader, s *settings, asciiFrames *[]string, asc
 			fmt.Printf("!! Error: %v\n", err)
 			return
 		}
-		result, err := convertSingleToAscii(img, s.asciiCols, s.asciiRows, s.useColor)
+		cols, rows := s.asciiCols, s.asciiRows
+		if s.nativeRes {
+			cols, rows = computeNativeGrid(img)
+			fmt.Printf(">> Source dimensions: %dx%d → ASCII grid: %dx%d\n", img.Bounds().Dx(), img.Bounds().Dy(), cols, rows)
+		}
+		result, err := convertSingleToAscii(img, cols, rows, s.useColor)
 		if err != nil {
 			fmt.Printf("!! Error: %v\n", err)
 			return
@@ -215,7 +233,12 @@ func handleConvert(reader *bufio.Reader, s *settings, asciiFrames *[]string, asc
 			fmt.Printf("!! Error: %v\n", err)
 			return
 		}
-		*asciiFrames, err = convertToAscii(frames, s.asciiCols, s.asciiRows, s.useColor)
+		cols, rows := s.asciiCols, s.asciiRows
+		if s.nativeRes && len(frames) > 0 {
+			cols, rows = computeNativeGrid(frames[0])
+			fmt.Printf(">> Source dimensions: %dx%d → ASCII grid: %dx%d\n", frames[0].Bounds().Dx(), frames[0].Bounds().Dy(), cols, rows)
+		}
+		*asciiFrames, err = convertToAscii(frames, cols, rows, s.useColor)
 		if err != nil {
 			fmt.Printf("!! Error: %v\n", err)
 			return
