@@ -57,7 +57,7 @@ Input media (mp4/jpg/png)
 - **Video & photo support** — `.mp4`, `.jpg`, `.png` inputs
 - **Colorful or black & white** ASCII modes
 - **Background color options** — black, gray, or white
-- **Adjustable resolution** — 720p, 480p, or 360p
+- **Adjustable resolution** — native (auto-detected from source), 720p, 480p, or 360p
 - **Adjustable FPS** — 30, 20, or 10
 - **Live terminal preview** — plays the ASCII animation frame-by-frame
 - **Dark color boost** — lifts dark pixel colors so characters stay visible against any background
@@ -152,7 +152,7 @@ Main Menu
 
 **Step 1 — Select Media:** Choose video or photo, set FPS (videos only), enter the path to your file, pick color mode and background color.
 
-**Step 2 — Select Resolution:** 720p for quality, 480p for balance, 360p for speed.
+**Step 2 — Select Resolution:** Native (auto-detects the source file's aspect ratio and preserves it in the ASCII grid), 720p for quality, 480p for balance, 360p for speed.
 
 **Step 3 — Convert to ASCII:** Processes the media into ASCII frames.
 
