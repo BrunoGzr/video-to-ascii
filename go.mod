@@ -1,6 +1,6 @@
 module video-to-ascii
 
-go 1.26
+go 1.23.2
 
 require (
 	github.com/Zebbeni/ansiart v0.1.3
