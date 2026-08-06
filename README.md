@@ -9,8 +9,8 @@ A Go tool that converts videos and photos into ASCII art — preview it live in 
       <td align="center"><b>ASCII Output</b></td>
     </tr>
     <tr>
-      <td align="center"><video src="assets/test.mp4" width="240" controls loop></video></td>
-      <td align="center"><video src="assets/test_Ascii.mp4" width="240" controls loop></video></td>
+      <td align="center"><img src="assets/original.gif" width="240" height="427"></td>
+      <td align="center"><img src="assets/ascii.gif" width="240" height="427"></td>
     </tr>
   </table>
 </p>
